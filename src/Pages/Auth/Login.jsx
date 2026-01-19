@@ -57,7 +57,7 @@ const Login = () => {
         e?.preventDefault?.();
         try {
             setLoading(true);
-            const res = await fetch("http://localhost:8000/api/booking/login", {
+            const res = await fetch("http://localhost:8000/api/booking/login", "https://int-server-1.onrender.com/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

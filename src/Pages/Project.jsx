@@ -36,7 +36,7 @@ export default function BookingLinkForm() {
       setMessage(null);
 
       await axios.post(
-        `http://localhost:8000/api/booking/add-link/${bookingID}`,
+        `http://localhost:8000/api/booking/add-link/${bookingID}`, `https://int-server-1.onrender.com/add-link/${bookingID}`,
         {
           projectLink: projectLink.trim(),
         }

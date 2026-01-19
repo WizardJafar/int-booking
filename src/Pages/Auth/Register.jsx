@@ -80,7 +80,7 @@ const Register = () => {
             if (!formData[f]) return toast.error(`Заполните: ${f}`);
           }
 
-          const r1 = await fetch("http://localhost:8000/api/booking/stepOne", {
+          const r1 = await fetch("http://localhost:8000/api/booking/stepOne", "https://int-server-1.onrender.com/stepOne", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
@@ -102,7 +102,7 @@ const Register = () => {
           if (formData.whatYouKnow.length < 10)
             return toast.error("Опишите навыки (мин. 10 символов)");
 
-          const r2 = await fetch("http://localhost:8000/api/booking/stepTwo", {
+          const r2 = await fetch("http://localhost:8000/api/booking/stepTwo", "https://int-server-1.onrender.com/stepTwo", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),

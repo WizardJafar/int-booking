@@ -72,12 +72,12 @@ const Profile = () => {
                     <div className="divider divider-primary"></div>
 
                     {/* О себе */}
-                    <div className="bg-gradient-to-br from-primary/5 to-secondary/5 p-4 rounded-xl mb-4 border border-primary/20">
+                    <div className="bg-gradient-to-br from-primary/5 to-secondary/5 p-4 rounded-xl mb-4 border border-primary/20 ">
                         <div className="flex items-center gap-2 mb-2">
                             <User className="w-5 h-5 text-primary" />
                             <h3 className="text-lg font-bold text-primary">О себе</h3>
                         </div>
-                        <p className="text-base leading-relaxed">{user.aboutYourself || "—"}</p>
+                        <p className="text-base leading-relaxed">{user.aboutYourself.slice(0, 80) || "—"}</p>
                     </div>
 
                     {/* Что умеешь */}
@@ -86,7 +86,7 @@ const Profile = () => {
                             <Star className="w-5 h-5 text-secondary" />
                             <h3 className="text-lg font-bold text-secondary">Навыки</h3>
                         </div>
-                        <p className="text-base leading-relaxed">{user.whatYouKnow || "—"}</p>
+                        <p className="text-base leading-relaxed">{user.whatYouKnow.slice(0, 80) || "—"}</p>
                     </div>
 
                     {/* Разделитель */}

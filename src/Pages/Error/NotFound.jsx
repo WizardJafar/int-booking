@@ -18,7 +18,7 @@ const NotFound = () => {
 
             {/* Title */}
             <div className="relative">
-              <div className="absolute inset-8   blur-3xl rounded-full bg-gradient-to-r from-primary to-secondary"></div>
+              <div className="absolute inset-8cd    blur-3xl rounded-full bg-gradient-to-r from-primary to-secondary"></div>
               <h2 className="text-9xl font-bold  text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary relative">Not Found</h2>
             </div>
           </div>

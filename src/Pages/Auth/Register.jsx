@@ -13,21 +13,22 @@ import TextType from "../../Components/ReactBits/TextType";
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [time, setTime] = useState("");
+
   const [step, setStep] = useState(1);
   const [mentors, setMentors] = useState([]);
   const [branches, setBranches] = useState([]);
   const [loading, setLoading] = useState(false);
-  
+  const today = new Date();
+
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
-  const nextYear = new Date();
-  nextYear.setFullYear(nextYear.getFullYear() + 1);
+
+  const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
-    teacher: "",
+    mentor: "",
     branch: "",
     grade: "",
     date: "",
@@ -45,15 +46,15 @@ const Register = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        
+
         // Загружаем менторов
         const mentorsRes = await axios.get(`http://localhost:8000/api/mentors`);
         setMentors(mentorsRes.data);
-        
+
         // Загружаем филиалы
         const branchesRes = await axios.get(`http://localhost:8000/api/branches`);
         setBranches(branchesRes.data);
-        
+
         setLoading(false);
       } catch (error) {
         toast.error("Ошибка загрузки данных");
@@ -74,7 +75,7 @@ const Register = () => {
     try {
       switch (step) {
         case 1:
-          const required = ["name", "surname", "teacher", "branch", "grade", "yearsOfStudy", "date", "tellegrammUsername", "phone"];
+          const required = ["name", "surname", "mentor", "branch", "grade", "yearsOfStudy", "date", "tellegrammUsername", "phone"];
           for (let f of required) {
             if (!formData[f]) return toast.error(`Заполните: ${f}`);
           }
@@ -101,7 +102,7 @@ const Register = () => {
           if (formData.whatYouKnow.length < 10)
             return toast.error("Опишите навыки (мин. 10 символов)");
 
-          const r2 = await fetch("http://localhost:5000/api/booking/stepTwo", {
+          const r2 = await fetch("http://localhost:8000/api/booking/stepTwo", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
@@ -123,13 +124,17 @@ const Register = () => {
     }
   };
 
-  const formatDateTimeLocal = (date) => {
+
+
+
+  const formatDate = (date) => {
     const pad = (n) => String(n).padStart(2, "0");
 
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
       date.getDate()
-    )}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    )}`;
   };
+
 
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
@@ -164,68 +169,72 @@ const Register = () => {
             {step === 1 && (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <input 
-                    name="name" 
-                    placeholder="Имя" 
+                  <input
+                    name="name"
+                    placeholder="Имя"
                     className="input input-bordered w-full"
-                    value={formData.name} 
-                    onChange={handleChange} 
+                    value={formData.name}
+                    onChange={handleChange}
                   />
 
-                  <input 
-                    name="surname" 
-                    placeholder="Фамилия" 
+                  <input
+                    name="surname"
+                    placeholder="Фамилия"
                     className="input input-bordered w-full"
-                    value={formData.surname} 
-                    onChange={handleChange} 
+                    value={formData.surname}
+                    onChange={handleChange}
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* SELECT для выбора учителя */}
                   <select
-                    name="teacher"
+                    name="mentor"
                     className="select select-bordered w-full"
-                    value={formData.teacher}
+                    value={formData.mentor}
                     onChange={handleChange}
                     disabled={loading}
-                  > 
+                  >
                     <option value="">
                       {loading ? "Загрузка..." : "Выберите учителя"}
                     </option>
+
                     {mentors.map((mentor) => (
-                      <option key={mentor._id || mentor.id} value={mentor.name}>
+                      <option key={mentor._id} value={mentor._id}>
                         {mentor.name}
                       </option>
                     ))}
                   </select>
 
-                  <input 
-                    name="tellegrammUsername" 
-                    placeholder="Username который отмечен собачкой" 
+
+                  <input
+                    name="tellegrammUsername"
+                    placeholder="Username который отмечен собачкой"
                     className="input input-bordered w-full"
-                    value={formData.tellegrammUsername} 
-                    onChange={handleChange} 
+                    value={formData.tellegrammUsername}
+                    onChange={handleChange}
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <input 
-                    name="phone" 
-                    placeholder="Номер" 
+                  <input
+                    name="phone"
+                    placeholder="Номер"
                     className="input input-bordered w-full"
-                    value={formData.phone} 
-                    onChange={handleChange} 
+                    value={formData.phone}
+                    onChange={handleChange}
                   />
 
                   <input
-                    type="datetime-local"
+                    type="date"
+                    name="date"
                     className="input input-bordered w-full"
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    min={formatDateTimeLocal(tomorrow)}
-                    max={formatDateTimeLocal(nextYear)}
+                    value={formData.date}
+                    onChange={handleChange}
+                    min={formatDate(tomorrow)}
+                    max={formatDate(endOfMonth)}
                   />
+
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -241,18 +250,18 @@ const Register = () => {
                       {loading ? "Загрузка..." : "Выберите филиал"}
                     </option>
                     {branches.map((branch) => (
-                      <option key={branch._id || branch.id} value={branch.name}>
+                      <option key={branch._id} value={branch._id}>
                         {branch.name}
                       </option>
                     ))}
                   </select>
 
-                  <input 
-                    name="grade" 
-                    placeholder="Грейд / Курс" 
+                  <input
+                    name="grade"
+                    placeholder="Грейд"
                     className="input input-bordered w-full"
-                    value={formData.grade} 
-                    onChange={handleChange} 
+                    value={formData.grade}
+                    onChange={handleChange}
                   />
                 </div>
 

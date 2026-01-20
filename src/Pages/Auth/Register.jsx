@@ -47,34 +47,30 @@ const Register = () => {
       try {
         setLoading(true);
 
-        // Загружаем менторов    
         const isLocalhost = window.location.hostname === "localhost";
 
-        const dataMArs = isLocalhost
-          ? `http://localhost:8000/api/mentors`
-          : `https://int-server-1.onrender.com/api/mentors`;
-        const mentorsRes = await axios.get(dataMArs);
+        const API_URL = isLocalhost
+          ? "http://localhost:8000/api"
+          : "https://int-server-1.onrender.com/api";
+
+        const [mentorsRes, branchesRes] = await Promise.all([
+          axios.get(`${API_URL}/mentors`),
+          axios.get(`${API_URL}/branches`),
+        ]);
+
         setMentors(mentorsRes.data);
-
-        // Загружаем филиалы
-        const isLocalhost2 = window.location.hostname === "localhost";
-
-        const dataMArs2 = isLocalhost2
-          ? `http://localhost:8000/api/branches`
-          : `https://int-server-1.onrender.com/api/branches`;
-        const branchesRes = await axios.get(`http://localhost:8000/api/branches`);
         setBranches(branchesRes.data);
-
-        setLoading(false);
       } catch (error) {
-        toast.error("Ошибка загрузки данных");
         console.error(error);
+        toast.error("Ошибка загрузки данных");
+      } finally {
         setLoading(false);
       }
     };
 
     fetchData();
   }, []);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;

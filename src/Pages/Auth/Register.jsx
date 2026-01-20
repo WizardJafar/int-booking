@@ -77,8 +77,8 @@ const Register = () => {
 
       const loginURL = isLocalhost
         ? `http://localhost:8000/api/booking/stepOne`
-        : `https://int-server-1.onrender.com/api/booking/stepTwo`;
-      
+        : `https://int-server-1.onrender.com/api/booking/stepOne`;
+
       switch (step) {
         case 1:
           const required = ["name", "surname", "mentor", "branch", "grade", "yearsOfStudy", "date", "tellegrammUsername", "phone"];
@@ -86,7 +86,7 @@ const Register = () => {
             if (!formData[f]) return toast.error(`Заполните: ${f}`);
           }
 
-          const r1 = await fetch("http://localhost:8000/api/booking/stepOne", {
+          const r1 = await fetch(loginURL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
@@ -102,13 +102,18 @@ const Register = () => {
           break;
 
         case 2:
+          const isLocalhost = window.location.hostname === "localhost";
+
+          const loginURL1 = isLocalhost
+            ? `http://localhost:8000/api/booking/stepTwo`
+            : `https://int-server-1.onrender.com/api/booking/stepTwo`;
           if (formData.aboutYourself.length < 10)
             return toast.error("Напишите хотя бы 10 символов о себе");
 
           if (formData.whatYouKnow.length < 10)
             return toast.error("Опишите навыки (мин. 10 символов)");
 
-          const r2 = await fetch("http://localhost:8000/api/booking/stepTwo", {
+          const r2 = await fetch(loginURL1, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),

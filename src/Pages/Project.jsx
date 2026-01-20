@@ -18,7 +18,7 @@ export default function BookingLinkForm() {
 
     const loginURL = isLocalhost
       ? `http://localhost:8000/api/booking/add-link/${bookingID}`
-      : `https://int-server-1.onrender.com/booking/add-link/${bookingID}`;
+      : `https://int-server-1.onrender.com/api/booking/add-link/${bookingID}`;
 
     if (!bookingID) {
       setMessage({

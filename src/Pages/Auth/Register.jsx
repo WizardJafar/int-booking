@@ -78,7 +78,7 @@ const Register = () => {
       const loginURL = isLocalhost
         ? `http://localhost:8000/api/booking/stepOne`
         : `https://int-server-1.onrender.com/booking/stepTwo`;
-      А
+      
       switch (step) {
         case 1:
           const required = ["name", "surname", "mentor", "branch", "grade", "yearsOfStudy", "date", "tellegrammUsername", "phone"];

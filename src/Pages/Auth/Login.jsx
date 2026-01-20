@@ -58,7 +58,7 @@ const Login = () => {
 
         const loginURL = isLocalhost
             ? `http://localhost:8000/api/booking/login`
-            : `https://int-server-1.onrender.com/booking/login`;
+            : `https://int-server-1.onrender.com/api/booking/login`;
 
         try {
             setLoading(true);

@@ -77,7 +77,7 @@ const Register = () => {
 
       const loginURL = isLocalhost
         ? `http://localhost:8000/api/booking/stepOne`
-        : `https://int-server-1.onrender.com/booking/stepTwo`;
+        : `https://int-server-1.onrender.com/api/booking/stepTwo`;
       
       switch (step) {
         case 1:

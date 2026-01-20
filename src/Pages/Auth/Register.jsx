@@ -176,67 +176,186 @@ const Register = () => {
 
   /* -------------------- JSX -------------------- */
   return (
-    <div className="relative min-h-screen flex items-center justify-center">
+    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
+      {/* 🔥 Background logos */}
       <BackgroundLogos />
 
-      <div className="relative z-50 w-full max-w-2xl p-4">
+      {/* 🔥 Form card */}
+      <div className="relative w-full max-w-2xl z-50 p-4">
         <div className="bg-base-100/80 rounded-3xl shadow-2xl">
-          {/* HEADER */}
-          <div className="bg-primary p-8 rounded-t-3xl text-primary-content">
+          {/* Header */}
+          <div className="bg-primary p-8 text-primary-content rounded-t-3xl flex justify-center flex-col">
             <TextType
-              text={[
-                "Регистрация на собеседование",
-                "Заполняйте данные внимательно",
-              ]}
-              typingSpeed={70}
-              pauseDuration={1200}
-              showCursor
+              text={["Регистрация на Собеседоване", "Вводите данные верно", "Их проверяет руководство"]}
+              typingSpeed={75}
+              pauseDuration={1500}
+              showCursor={true}
+              cursorCharacter="|"
+              className="text-3xl font-bold text-center mb-1"
             />
-            <p className="text-center opacity-70 mt-2">
-              Шаг {step} из 2
-            </p>
+            <p className="text-center opacity-70">Шаг {step} из 2</p>
+
+            <div className="mt-6 bg-primary-content bg-opacity-20 h-2 rounded-full overflow-hidden">
+              <div
+                className="bg-primary-content h-full transition-all duration-500 rounded-full"
+                style={{ width: `${(step / 2) * 100}%` }}
+              ></div>
+            </div>
           </div>
 
-          {/* FORM */}
+          {/* Form */}
           <div className="p-8 space-y-5">
             {step === 1 && (
               <>
-                <input name="name" placeholder="Имя" className="input input-bordered w-full" value={formData.name} onChange={handleChange} />
-                <input name="surname" placeholder="Фамилия" className="input input-bordered w-full" value={formData.surname} onChange={handleChange} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <input
+                    name="name"
+                    placeholder="Имя"
+                    className="input input-bordered w-full"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
 
-                <select name="mentor" className="select select-bordered w-full" value={formData.mentor} onChange={handleChange}>
-                  <option value="">Выберите ментора</option>
-                  {mentors.map((m) => (
-                    <option key={m._id} value={m._id}>{m.name}</option>
-                  ))}
-                </select>
+                  <input
+                    name="surname"
+                    placeholder="Фамилия"
+                    className="input input-bordered w-full"
+                    value={formData.surname}
+                    onChange={handleChange}
+                  />
+                </div>
 
-                <select name="branch" className="select select-bordered w-full" value={formData.branch} onChange={handleChange}>
-                  <option value="">Выберите филиал</option>
-                  {branches.map((b) => (
-                    <option key={b._id} value={b._id}>{b.name}</option>
-                  ))}
-                </select>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* SELECT для выбора учителя */}
+                  <select
+                    name="mentor"
+                    className="select select-bordered w-full"
+                    value={formData.mentor}
+                    onChange={handleChange}
+                    disabled={loading}
+                  >
+                    <option value="">
+                      {loading ? "Загрузка..." : "Выберите учителя"}
+                    </option>
 
-                <input name="tellegrammUsername" placeholder="Telegram username" className="input input-bordered w-full" value={formData.tellegrammUsername} onChange={handleChange} />
-                <input name="phone" placeholder="Телефон" className="input input-bordered w-full" value={formData.phone} onChange={handleChange} />
-                <input type="date" name="date" className="input input-bordered w-full" min={formatDate(tomorrow)} max={formatDate(endOfMonth)} value={formData.date} onChange={handleChange} />
-                <input name="grade" placeholder="Грейд" className="input input-bordered w-full" value={formData.grade} onChange={handleChange} />
-                <input type="number" name="yearsOfStudy" placeholder="Лет обучения" className="input input-bordered w-full" value={formData.yearsOfStudy} onChange={handleChange} />
+                    {mentors.map((mentor) => (
+                      <option key={mentor._id} value={mentor._id}>
+                        {mentor.name}
+                      </option>
+                    ))}
+                  </select>
+
+
+                  <input
+                    name="tellegrammUsername"
+                    placeholder="Username который отмечен собачкой"
+                    className="input input-bordered w-full"
+                    value={formData.tellegrammUsername}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <input
+                    name="phone"
+                    placeholder="Номер"
+                    className="input input-bordered w-full"
+                    value={formData.phone}
+                    onChange={handleChange}
+                  />
+
+                  <input
+                    type="date"
+                    name="date"
+                    className="input input-bordered w-full"
+                    value={formData.date}
+                    onChange={handleChange}
+                    min={formatDate(tomorrow)}
+                    max={formatDate(endOfMonth)}
+                  />
+
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* SELECT для выбора филиала */}
+                  <select
+                    name="branch"
+                    className="select  select-bordered w-full"
+                    value={formData.branch}
+                    onChange={handleChange}
+                    disabled={loading}
+                  >
+                    <option value="">
+                      {loading ? "Загрузка..." : "Выберите филиал"}
+                    </option>
+                    {branches.map((branch) => (
+                      <option key={branch._id} value={branch._id}>
+                        {branch.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <input
+                    name="grade"
+                    placeholder="Грейд"
+                    className="input input-bordered w-full"
+                    value={formData.grade}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <input
+                    name="yearsOfStudy"
+                    placeholder="Лет обучения"
+                    type="number"
+                    className="input input-bordered w-full"
+                    value={formData.yearsOfStudy}
+                    onChange={handleChange}
+                  />
+
+                  <select
+                    name="direction"
+                    className="select select-bordered w-full"
+                    value={formData.direction}
+                    onChange={handleChange}
+                  >
+                    <option value="backend">Backend</option>
+                    <option value="frontend">Frontend</option>
+                    <option value="fullstack">FullStack</option>
+                  </select>
+                </div>
               </>
             )}
 
             {step === 2 && (
               <>
-                <textarea name="aboutYourself" placeholder="О себе" className="textarea textarea-bordered w-full h-32" value={formData.aboutYourself} onChange={handleChange} />
-                <textarea name="whatYouKnow" placeholder="Что вы знаете" className="textarea textarea-bordered w-full h-32" value={formData.whatYouKnow} onChange={handleChange} />
+                <textarea
+                  name="aboutYourself"
+                  placeholder="Расскажите о себе"
+                  className="textarea textarea-bordered w-full h-32"
+                  value={formData.aboutYourself}
+                  onChange={handleChange}
+                ></textarea>
+
+                <textarea
+                  name="whatYouKnow"
+                  placeholder="Что вы умеете"
+                  className="textarea textarea-bordered w-full h-32"
+                  value={formData.whatYouKnow}
+                  onChange={handleChange}
+                ></textarea>
               </>
             )}
 
-            <div className="flex justify-between">
-              <Link to="/Login">Уже есть аккаунт</Link>
-              <button className="btn btn-primary" onClick={handleNextStep}>
-                {step === 1 ? "Далее →" : "Завершить"}
+            {/* Buttons */}
+            <div className="flex justify-between mt-6">
+              <div className="flex text-primary font-mono ">
+                <Link to="/Login">Уже есть акаунт</Link>
+              </div>
+
+              <button className="btn btn-primary ml-auto" onClick={handleNextStep}>
+                {step === 1 ? "Далее →" : "✓ Завершить регистрацию"}
               </button>
             </div>
           </div>
@@ -247,3 +366,5 @@ const Register = () => {
 };
 
 export default Register;
+
+

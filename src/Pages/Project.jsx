@@ -14,6 +14,11 @@ export default function BookingLinkForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const isLocalhost = window.location.hostname === "localhost";
+
+    const loginURL = isLocalhost
+      ? `http://localhost:8000/api/booking/add-link/${bookingID}`
+      : `https://int-server-1.onrender.com/booking/add-link/${bookingID}`;
 
     if (!bookingID) {
       setMessage({
@@ -36,7 +41,7 @@ export default function BookingLinkForm() {
       setMessage(null);
 
       await axios.post(
-        `http://localhost:8000/api/booking/add-link/${bookingID}`, `https://int-server-1.onrender.com/add-link/${bookingID}`,
+        loginURL,
         {
           projectLink: projectLink.trim(),
         }

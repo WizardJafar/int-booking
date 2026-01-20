@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { login } from "../../Redux/Slices/AuthSlice";
 
-// -- Existing project components (do not invent new ones)
 
 import BackgroundLogos from "../../Components/RegisterComponents/BackgroundLogos";
 import TextType from "../../Components/ReactBits/TextType";
@@ -55,9 +54,15 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e?.preventDefault?.();
+        const isLocalhost = window.location.hostname === "localhost";
+
+        const loginURL = isLocalhost
+            ? `http://localhost:8000/api/booking/login`
+            : `https://int-server-1.onrender.com/booking/login`;
+
         try {
             setLoading(true);
-            const res = await fetch("http://localhost:8000/api/booking/login", "https://int-server-1.onrender.com/login", {
+            const res = await fetch(loginURL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

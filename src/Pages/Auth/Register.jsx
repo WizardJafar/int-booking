@@ -47,11 +47,21 @@ const Register = () => {
       try {
         setLoading(true);
 
-        // Загружаем менторов
-        const mentorsRes = await axios.get(`http://localhost:8000/api/mentors`);
+        // Загружаем менторов    
+        const isLocalhost = window.location.hostname === "localhost";
+
+        const dataMArs = isLocalhost
+          ? `http://localhost:8000/api/mentors`
+          : `https://int-server-1.onrender.com/api/mentors`;
+        const mentorsRes = await axios.get(dataMArs);
         setMentors(mentorsRes.data);
 
         // Загружаем филиалы
+        const isLocalhost2 = window.location.hostname === "localhost";
+
+        const dataMArs2 = isLocalhost2
+          ? `http://localhost:8000/api/branches`
+          : `https://int-server-1.onrender.com/api/branches`;
         const branchesRes = await axios.get(`http://localhost:8000/api/branches`);
         setBranches(branchesRes.data);
 
